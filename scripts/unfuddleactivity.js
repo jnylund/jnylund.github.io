@@ -1,12 +1,19 @@
+// Global varaible to store fetched items, so we can easily filter it multiple times
 var fetchedItems = null;
+// Global variable to store the current filter set based on applied filters.
 var currentFilter = null;
+// Global hash to store ids of users and their names
 var people = {};
+
+// Component to show an activity item returned from unfuddle.
 var Item = React.createClass({
   removeRecord: function(e){
       this.props.handleItemRemove(this);
   },
   render: function() {
         var extraData = "";
+        // Some items have various extra data, this is to grab this data by item type.
+        // Could probably be a case statement.
         if(this.props.record_type === "Comment")
           extraData = this.props.record.comment.body;
         if(this.props.record_type === "Changeset")
@@ -15,6 +22,7 @@ var Item = React.createClass({
             extraData = this.props.record.ticket.summary;
 
         var personName = "";
+        // some items dont have associated people
         if (people[this.props.person_id] != null)
           personName = people[this.props.person_id];
 
@@ -32,8 +40,9 @@ var Item = React.createClass({
   }
 });
 
+// The container of all components
 var ItemBox = React.createClass({
-
+  // Loads all the items from the server
   loadItemsFromServer: function(reqFormData) {
     var authString = reqFormData.userName + ":" + reqFormData.password;
     var encoded_auth = window.btoa(authString);
@@ -41,9 +50,8 @@ var ItemBox = React.createClass({
     var urlBase = "https://" + reqFormData.subDomain + "." + this.props.url;
     var fullUrl = urlBase + projectUrl;
 
-    // we want to wait for the data to load to we can resolve people before we set state
     self = this;
-
+    // we want to wait for the data to load to we can resolve people before we set state
     var jsPromise = Promise.resolve(
       $.ajax({
         url: fullUrl,
@@ -62,7 +70,7 @@ var ItemBox = React.createClass({
       }
 
       var arrayOfPromises = [];
-
+      // get the unique list of people id's and then go get their names from unfuddle
       var uniquePersonIdKeys = Object.keys(uniquePersonIds);
       for (var x=0;x<uniquePersonIdKeys.length;x++)
       {
@@ -79,26 +87,20 @@ var ItemBox = React.createClass({
       }
 
 
-
+     // wait for all people to be loaded before setting state so names look good
      Promise.all(arrayOfPromises).then(function(arrayOfResults) {
       for(var y=0;y<arrayOfResults.length;y++)
       {
         var data = arrayOfResults[y];
         people[data.id] = data.first_name + " " + data.last_name;
       }
-
       self.setState({data: fetchedItems});
      });
-
-
-
     }, function(xhrObj) {
       console.error(self.props.url, xhrObj.toString());
     });
-
-
-
   },
+  // Handles the filtering of data based on the filter form
   handleFilterSubmit: function(filterOptions)
   {
     currentFilter = [];
@@ -150,7 +152,7 @@ var ItemBox = React.createClass({
     );
   }
 });
-
+// Component to render list of items.
 var ItemList = React.createClass({
   render: function() {
    var self = this;
@@ -187,9 +189,11 @@ var ItemList = React.createClass({
     );
   }
 });
-
+// Component to render item form for fetching data
 var ItemForm = React.createClass({
   getInitialState: function() {
+    // All this to get 2 dates, one for today, and one for 2 weeks ago.
+    // Seems like there should be a cleaner way to do this.
     var today = new Date();
     var dd = today.getDate();
     var mm = today.getMonth()+1; //January is 0!
@@ -207,6 +211,7 @@ var ItemForm = React.createClass({
 
     return {subDomain: subDomain, startDate: startDate, endDate: endDate, userName: userName, password: password, projectId: projectId};
   },
+  // generic handle change function
  handleChange : function (e) {
     // this is a generic handle change function that uses the html id to set the state instead of
     // having a bunch of if statements
@@ -303,7 +308,7 @@ var ItemForm = React.createClass({
     );
       }
 });
-
+// Component to render filter form
 var FilterForm = React.createClass({
   getInitialState: function() {
     var actionType = "ALL";
