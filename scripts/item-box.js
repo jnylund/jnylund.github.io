@@ -9,7 +9,7 @@ var ItemBox = React.createClass({
     var fullUrl = urlBase + projectUrl;
     var fetchedItems = null;
     var people = [];
-    
+
     self = this;
     // we want to wait for the data to load to we can resolve people before we set state
     var jsPromise = Promise.resolve(
@@ -87,7 +87,7 @@ var ItemBox = React.createClass({
    return filteredData;
   },
   getInitialState: function() {
-    return {data: [], allItems: []; people: []};
+    return {data: [], allItems: [], people: []};
   },
   componentDidMount: function() {
   },
