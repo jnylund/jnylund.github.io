@@ -1,10 +1,3 @@
-// Global varaible to store fetched items, so we can easily filter it multiple times
-var fetchedItems = null;
-// Global variable to store the current filter set based on applied filters.
-var currentFilter = null;
-// Global hash to store ids of users and their names
-var people = {};
-
 // Component to show an activity item returned from unfuddle.
 var Item = React.createClass({
   removeRecord: function(e){
@@ -49,6 +42,7 @@ var ItemBox = React.createClass({
     var projectUrl = "projects/" + reqFormData.projectId + "/activity?start_date=" + reqFormData.startDate + "&end_date=" + reqFormData.endDate;
     var urlBase = "https://" + reqFormData.subDomain + "." + this.props.url;
     var fullUrl = urlBase + projectUrl;
+    var fetchedItems = null;
 
     self = this;
     // we want to wait for the data to load to we can resolve people before we set state
@@ -94,7 +88,7 @@ var ItemBox = React.createClass({
         var data = arrayOfResults[y];
         people[data.id] = data.first_name + " " + data.last_name;
       }
-      self.setState({data: fetchedItems});
+      self.setState({data: fetchedItems, allItems: fetchedItems, people: people});
      });
     }, function(xhrObj) {
       console.error(self.props.url, xhrObj.toString());
@@ -108,7 +102,7 @@ var ItemBox = React.createClass({
 
     var toResolvedStr = "to *Resolved*."
     var toClosedStr = "to *Closed*."
-
+    var fetchedItems = this.props.allItems;
     for (var i=0;i<fetchedItems.length;i++)
     {
       item = fetchedItems[i];
@@ -122,6 +116,10 @@ var ItemBox = React.createClass({
     }
     this.setState({data: currentFilter});
   },
+  filteredData: function(data){
+
+   return filteredData;
+  },
   getInitialState: function() {
     return {data: []};
   },
@@ -132,7 +130,7 @@ var ItemBox = React.createClass({
       <div className="itemBox">
         <div className="panel panel-default">
           <div className="panel-heading">
-            Fetch
+          Fetch
           </div>
           <div className="panel-body">
             <ItemForm onFetchSubmit={this.loadItemsFromServer} />
@@ -140,12 +138,13 @@ var ItemBox = React.createClass({
         </div>
         <div className="panel panel-default">
           <div className="panel-heading">
-            Filter
+          Filter
           </div>
           <FilterForm onFilterSubmit={this.handleFilterSubmit} />
         </div>
-          <h1>Activity Items</h1>
+        <h1>Activity Items</h1>
         <ItemList
+        // TODO change this to a function filteredData() that only passes the filtered data down, move if statements for filter to this function.
           data={this.state.data}
         />
       </div>
