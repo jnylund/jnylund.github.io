@@ -8,7 +8,8 @@ var ItemBox = React.createClass({
     var urlBase = "https://" + reqFormData.subDomain + "." + this.props.url;
     var fullUrl = urlBase + projectUrl;
     var fetchedItems = null;
-
+    var people = [];
+    
     self = this;
     // we want to wait for the data to load to we can resolve people before we set state
     var jsPromise = Promise.resolve(
