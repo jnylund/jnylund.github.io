@@ -89,7 +89,7 @@ var ItemBox = React.createClass({
   getInitialState: function() {
     return {data: [], allItems: [], people: []};
   },
-  componentDidMount: function() {
+ componentDidMount: function() {
   },
   render: function() {
     return (
