@@ -121,7 +121,7 @@ var ItemBox = React.createClass({
    return filteredData;
   },
   getInitialState: function() {
-    return {data: []};
+    return {data: [], allItems: []; people: []};
   },
   componentDidMount: function() {
   },
