@@ -111,6 +111,7 @@ var ItemBox = React.createClass({
         <ItemList
         // TODO change this to a function filteredData() that only passes the filtered data down, move if statements for filter to this function.
           data={this.state.data}
+          people={this.state.people}
         />
       </div>
     );

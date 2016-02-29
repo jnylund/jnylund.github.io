@@ -14,16 +14,11 @@ var Item = React.createClass({
         if(this.props.record_type === "Ticket")
             extraData = this.props.record.ticket.summary;
 
-        var personName = "";
-        // some items dont have associated people
-        if (people[this.props.person_id] != null)
-          personName = people[this.props.person_id];
-
         return (
             <tr>
               <td >{this.props.event}:</td>
               <td>{this.props.description}</td>
-              <td >{personName}({this.props.person_id})</td>
+              <td >{this.props.personName}({this.props.person_id})</td>
               <td >{this.props.record_type}:</td>
               <td >{this.props.record_id}:</td>
               <td >{extraData}:</td>
