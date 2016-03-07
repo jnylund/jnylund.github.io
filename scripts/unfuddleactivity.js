@@ -19,7 +19,7 @@ var Item = React.createClass({
             <tr>
               <td >{this.props.event}:</td>
               <td>{this.props.description}</td>
-              <td >{this.props.personName}({this.props.person_id})</td>
+              <td >{this.props.person_name}({this.props.person_id})</td>
               <td >{this.props.record_type}:</td>
               <td >{this.props.record_id}:</td>
               <td >{extraData}:</td>
@@ -37,7 +37,7 @@ var ItemList = React.createClass({
       var hsr = self.props.onItemRemove;
       var personName = "";
       // some items dont have associated people
-      if (self.props.people[self.props.person_id] != null)
+      if (self.props.people[item.person_id] != null)
         personName = self.props.people[item.person_id];
 
       return (
@@ -347,12 +347,12 @@ var ItemBox = React.createClass({
   // Handles the filtering of data based on the filter form
   handleFilterSubmit: function(filterOptions)
   {
-    currentFilter = [];
+    var currentFilter = [];
     var item = null;
 
     var toResolvedStr = "to *Resolved*."
     var toClosedStr = "to *Closed*."
-    var fetchedItems = this.props.allItems;
+    var fetchedItems = this.state.allItems;
     for (var i=0;i<fetchedItems.length;i++)
     {
       item = fetchedItems[i];
