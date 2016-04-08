@@ -117,3 +117,4 @@ var ItemForm = React.createClass({
     );
       }
 });
+window.ItemForm = ItemForm;

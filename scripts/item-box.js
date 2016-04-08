@@ -1,3 +1,4 @@
+
 // The container of all components
 var ItemBox = React.createClass({
   // Loads all the items from the server

@@ -27,3 +27,4 @@ var Item = React.createClass({
     );
   }
 });
+window.Item = Item;

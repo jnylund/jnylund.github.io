@@ -42,3 +42,4 @@ var ItemList = React.createClass({
     );
   }
 });
+window.ItemList = ItemList;

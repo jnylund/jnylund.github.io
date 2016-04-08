@@ -5,16 +5,21 @@
     <title>Unfuddle Activity Using React.js</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" />
     <link rel="stylesheet" href="css/base.css" />
+
+<!-- This package gets you immediate access to React, without also requiring the JSX transformer. This is especially useful for cases where you want to browserify your module using React -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react.js"></script>
+<!-- This package serves as the entry point of the DOM-related rendering paths. It is intended to be paired with the isomorphic React, which will be shipped as react to npm -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.7/react-dom.js"></script>
+<!-- Babel is a js compiler, this library lets your browser compoile your React.js code into plain old javascript. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+<!-- This is used for our ajax calls, there is a better way to do this, but for now most of us understand jquery, so lets start here. -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
 
 
   </head>
   <body>
     <div id="content"></div>
+    <!-- Write your comments here -->
     <script type="text/babel" src="scripts/unfuddleactivity.js"></script>
 
   </body>

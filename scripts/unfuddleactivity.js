@@ -6,23 +6,36 @@ var Item = React.createClass({
   },
   render: function() {
         var extraData = "";
+        var rec_id = this.props.record_id;
         // Some items have various extra data, this is to grab this data by item type.
         // Could probably be a case statement.
         if(this.props.record_type === "Comment")
+        {
           extraData = this.props.record.comment.body;
+          rec_id = this.props.record.comment.parent_id;
+
+        }
         if(this.props.record_type === "Changeset")
+        {
             extraData = this.props.record.changeset.message;
+            rec_id = this.props.record.changeset.parent_id;
+
+        }
         if(this.props.record_type === "Ticket")
+        {
             extraData = this.props.record.ticket.summary;
+            rec_id = this.props.record.ticket.id;
+        }
 
         return (
             <tr>
               <td >{this.props.event}:</td>
+              <td>{this.props.action_date}</td>
               <td>{this.props.description}</td>
               <td >{this.props.person_name}({this.props.person_id})</td>
-              <td >{this.props.record_type}:</td>
-              <td >{this.props.record_id}:</td>
-              <td >{extraData}:</td>
+              <td >{this.props.record_type}</td>
+              <td >{rec_id}</td>
+              <td >{extraData}</td>
 
             </tr>
     );
@@ -43,6 +56,7 @@ var ItemList = React.createClass({
       return (
         <Item key={item.id}
           id={item.id}
+          action_date={item.created_at}
           event={item.event}
           description={item.description}
           person_id={item.person_id}
@@ -59,6 +73,7 @@ var ItemList = React.createClass({
           <tbody>
             <tr>
               <th>Action</th>
+              <th>Date</th>
               <th>Description</th>
               <th>Person</th>
               <th>Record Type</th>
@@ -207,18 +222,23 @@ var FilterForm = React.createClass({
     // having a bunch of if statements
     var stateObject = function() {
       var returnObj = {};
-      var retVal = null;
-      if (this.target.id === "showResolved")
-      {
-          retVal = this.target.checked;
-      }
-      else {
-        retVal = this.target.value;
-      }
+      var retVal = this.target.value;
       returnObj[this.target.id] = retVal;
       return returnObj;
     }.bind(e)();
   this.setState(stateObject);
+  },
+  handleCheckChange : function(e) {
+    // this is a generic handle change function that uses the html id to set the state instead of
+    // having a bunch of if statements for checkboxes
+    var stateObject = function() {
+      var returnObj = {};
+      var retVal = this.target.checked;
+      returnObj[this.target.id] = retVal;
+      return returnObj;
+    }.bind(e)();
+  this.setState(stateObject);
+
   },
   handleSubmit: function(e) {
     e.preventDefault();
@@ -267,7 +287,7 @@ var FilterForm = React.createClass({
                   id='showResolved'
                   type="checkbox"
                   value={this.state.showResolved}
-                  onChange={this.handleChange}
+                  onChange={this.handleCheckChange}
                 />
               </td>
 
